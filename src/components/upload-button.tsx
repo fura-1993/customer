@@ -15,7 +15,7 @@ export function UploadButton({ jobId, type, onUploadComplete }: UploadButtonProp
   const endpoint = getEndpointByType(type);
 
   return (
-    <UTUploadButton<OurFileRouter>
+    <UTUploadButton<OurFileRouter, any>
       endpoint={endpoint}
       onClientUploadComplete={() => {
         if (onUploadComplete) {
@@ -33,7 +33,7 @@ export function UploadButton({ jobId, type, onUploadComplete }: UploadButtonProp
           }
           return <Button type="button" disabled>読み込み中...</Button>;
         },
-        allowedContent({ ready, fileTypes, isUploading }) {
+        allowedContent({ ready, isUploading }) {
           if (!ready) return '読み込み中...';
           if (isUploading) return 'アップロード中...';
           

@@ -1,9 +1,7 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { getSupabaseAdmin, isAdminEmail } from '@/lib/supabaseService';
 
 export async function GET() {
-  const cookieStore = cookies();
   const supabase = getSupabaseAdmin();
   
   const { data: { session } } = await supabase.auth.getSession();

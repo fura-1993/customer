@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getSupabaseServer } from '@/lib/supabaseService';
 import { formatInTimeZone } from 'date-fns-tz';
-import { UploadButton } from '@/components/upload-button';
 
 export const metadata: Metadata = {
   title: '案件詳細 | 顧客管理システム',

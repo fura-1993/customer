@@ -156,7 +156,7 @@ function FileGrid({ files, jobId }: { files: Asset[]; jobId: string }) {
   );
 }
 
-function FileCard({ file, jobId }: { file: Asset; jobId: string }) {
+function FileCard({ file }: { file: Asset; jobId: string }) {
   
   return (
     <div className="rounded-lg border overflow-hidden">
