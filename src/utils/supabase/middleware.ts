@@ -14,17 +14,17 @@ export const createClient = (request: NextRequest) => {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        get(name) {
+        async get(name) {
           return request.cookies.get(name)?.value;
         },
-        set(name, value, options) {
+        async set(name, value, options) {
           request.cookies.set(name, value);
           response = NextResponse.next({
             request,
           });
           response.cookies.set(name, value, options);
         },
-        remove(name, options) {
+        async remove(name, options) {
           request.cookies.set(name, '');
           response = NextResponse.next({
             request,
