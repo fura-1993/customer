@@ -6,7 +6,7 @@ export async function GET(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const authCookie = cookieStore.get('jatrack_auth');
   
   if (!authCookie || authCookie.value !== 'authenticated') {
