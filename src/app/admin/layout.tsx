@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { getSupabaseServer, isAdminEmail } from '@/lib/supabaseService';
+import { adminLogout } from './layout-actions';
 
 export const metadata: Metadata = {
   title: '管理者ページ | 顧客管理システム',
@@ -59,12 +60,7 @@ export default async function AdminLayout({
             <Link href="/dashboard" passHref>
               <Button variant="ghost">ダッシュボードへ</Button>
             </Link>
-            <form action={async () => {
-              'use server';
-              const supabase = getSupabaseServer();
-              await supabase.auth.signOut();
-              redirect('/admin/login');
-            }}>
+            <form action={adminLogout}>
               <Button variant="outline" type="submit">ログアウト</Button>
             </form>
           </nav>

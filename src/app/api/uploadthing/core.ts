@@ -22,7 +22,7 @@ const auth = async () => {
 
 export const uploadRouter = {
   imageUploader: f({ image: { maxFileSize: "4MB" } })
-    .middleware(async ({ req }) => {
+    .middleware(async () => {
       return await auth();
     })
     .onUploadComplete(async ({ metadata, file }) => {
@@ -46,7 +46,7 @@ export const uploadRouter = {
     }),
   
   documentUploader: f({ pdf: { maxFileSize: "8MB" } })
-    .middleware(async ({ req }) => {
+    .middleware(async () => {
       return await auth();
     })
     .onUploadComplete(async ({ metadata, file }) => {
@@ -70,7 +70,7 @@ export const uploadRouter = {
     }),
   
   videoUploader: f({ video: { maxFileSize: "256MB" } })
-    .middleware(async ({ req }) => {
+    .middleware(async () => {
       return await auth();
     })
     .onUploadComplete(async ({ metadata, file }) => {

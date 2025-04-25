@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getSupabaseServer } from '@/lib/supabaseService';
 import { UploadButton } from '@/components/upload-button';
+import { deleteAsset } from './actions';
 
 export const metadata: Metadata = {
   title: 'ファイル管理 | 顧客管理システム',
@@ -125,7 +126,16 @@ export default async function JobFilesPage({
   );
 }
 
-function FileGrid({ files, jobId }: { files: any[]; jobId: string }) {
+interface Asset {
+  id: string;
+  job_id: string;
+  type: string;
+  url: string;
+  filename: string;
+  created_at: string;
+}
+
+function FileGrid({ files, jobId }: { files: Asset[]; jobId: string }) {
   if (files.length === 0) {
     return (
       <div className="rounded-lg border p-8 text-center">
@@ -146,10 +156,7 @@ function FileGrid({ files, jobId }: { files: any[]; jobId: string }) {
   );
 }
 
-function FileCard({ file, jobId }: { file: any; jobId: string }) {
-  const isImage = file.type === 'before' || file.type === 'after' || file.type === 'scene';
-  const isPdf = file.type === 'doc';
-  const isVideo = file.type === 'video';
+function FileCard({ file, jobId }: { file: Asset; jobId: string }) {
   
   return (
     <div className="rounded-lg border overflow-hidden">
@@ -161,11 +168,7 @@ function FileCard({ file, jobId }: { file: any; jobId: string }) {
       </div>
       
       <div className="flex justify-end p-2 bg-muted/20 border-t">
-        <form action={async () => {
-          'use server';
-          const supabase = getSupabaseServer();
-          await supabase.from('assets').delete().eq('id', file.id);
-        }}>
+        <form action={() => deleteAsset(file.id)}>
           <Button variant="outline" size="sm" type="submit" className="text-destructive">
             削除
           </Button>

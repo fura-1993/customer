@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { logout } from './actions';
 
 export const metadata: Metadata = {
   title: '顧客管理システム',
@@ -34,17 +35,7 @@ export default async function DashboardLayout({
             <Link href="/dashboard" passHref>
               <Button variant="ghost">顧客一覧</Button>
             </Link>
-            <form action={async () => {
-              'use server';
-              const cookieStore = await cookies();
-              cookieStore.set({
-                name: 'jatrack_auth',
-                value: '',
-                expires: new Date(0),
-                path: '/',
-              });
-              redirect('/login');
-            }}>
+            <form action={logout}>
               <Button variant="outline" type="submit">ログアウト</Button>
             </form>
           </nav>

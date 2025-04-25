@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getSupabaseAdmin } from '@/lib/supabaseService';
 import { Button } from '@/components/ui/button';
+import { toggleRLS, cleanupUnusedFiles } from './actions';
 
 export const metadata: Metadata = {
   title: '管理者ページ | 顧客管理システム',
@@ -12,17 +13,17 @@ export const dynamic = 'force-dynamic';
 export default async function AdminPage() {
   const supabase = getSupabaseAdmin();
   
-  const { data: customers, error: customerError } = await supabase
+  const { data: customers } = await supabase
     .from('customers')
     .select('id, name, address, created_at')
     .order('created_at', { ascending: false });
   
-  const { data: jobs, error: jobError } = await supabase
+  const { data: jobs } = await supabase
     .from('jobs')
     .select('id, customer_id, description, start_date, amount')
     .order('created_at', { ascending: false });
   
-  const { data: assets, error: assetError } = await supabase
+  const { data: assets } = await supabase
     .from('assets')
     .select('id, job_id, type, filename')
     .order('created_at', { ascending: false });
@@ -30,11 +31,6 @@ export default async function AdminPage() {
   const { data: rlsEnabled } = await supabase
     .rpc('check_rls_enabled');
 
-  async function toggleRLS(enabled: boolean) {
-    'use server';
-    const admin = getSupabaseAdmin();
-    await admin.rpc('toggle_rls', { enabled });
-  }
 
   return (
     <div className="space-y-8">
@@ -75,11 +71,7 @@ export default async function AdminPage() {
             <Button variant="outline" asChild>
               <a href="/api/admin/export-assets" download>CSVダウンロード</a>
             </Button>
-            <form action={async () => {
-              'use server';
-              const admin = getSupabaseAdmin();
-              await admin.rpc('cleanup_unused_files');
-            }}>
+            <form action={cleanupUnusedFiles}>
               <Button variant="outline">未使用ファイル削除</Button>
             </form>
           </div>
